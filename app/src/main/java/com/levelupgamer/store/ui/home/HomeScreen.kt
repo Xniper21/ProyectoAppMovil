@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.proyectoappmovil.R
 
 @Composable
-fun HomeScreen(onViewCatalog: () -> Unit) {
+fun HomeScreen(username: String, onViewCatalog: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -27,6 +27,12 @@ fun HomeScreen(onViewCatalog: () -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            text = "¡Hola, $username!",
+            style = MaterialTheme.typography.headlineSmall,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = stringResource(id = R.string.login_title),
             style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),

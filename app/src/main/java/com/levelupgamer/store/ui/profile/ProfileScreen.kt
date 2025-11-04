@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,7 +26,7 @@ import com.example.proyectoappmovil.R
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(onLogout: () -> Unit) { // Added onLogout parameter
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
 
@@ -81,6 +82,15 @@ fun ProfileScreen() {
                 .height(50.dp)
         ) {
             Text(stringResource(id = R.string.change_photo))
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Logout Button
+        TextButton(onClick = onLogout) {
+            Icon(Icons.Default.Logout, contentDescription = null, tint = MaterialTheme.colorScheme.error)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(stringResource(id = R.string.logout), color = MaterialTheme.colorScheme.error)
         }
     }
 }

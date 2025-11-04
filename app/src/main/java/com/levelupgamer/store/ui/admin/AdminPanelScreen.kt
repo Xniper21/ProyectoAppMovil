@@ -23,7 +23,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminPanelScreen(onAddProduct: () -> Unit, onEditProduct: (Int) -> Unit, onLogout: () -> Unit) {
+fun AdminPanelScreen(username: String, onAddProduct: () -> Unit, onEditProduct: (Int) -> Unit, onLogout: () -> Unit) {
     val viewModel: AdminProductViewModel = viewModel()
     val products by viewModel.products.collectAsState()
 
@@ -44,32 +44,39 @@ fun AdminPanelScreen(onAddProduct: () -> Unit, onEditProduct: (Int) -> Unit, onL
             }
         }
     ) { innerPadding ->
-        LazyColumn(
-            contentPadding = innerPadding,
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+        Column(
+            modifier = Modifier.padding(innerPadding).padding(horizontal = 16.dp)
         ) {
-            items(products) { product ->
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier.padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(product.name, style = MaterialTheme.typography.titleLarge)
-                            val format = NumberFormat.getCurrencyInstance(Locale("es", "CL"))
-                            format.maximumFractionDigits = 0
-                            Text(
-                                text = format.format(product.price),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-                        Row {
-                            IconButton(onClick = { onEditProduct(product.id) }) {
-                                Icon(Icons.Default.Edit, contentDescription = stringResource(id = R.string.edit_product))
+            Text(
+                text = "Hola, $username",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(products) { product ->
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier.padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(product.name, style = MaterialTheme.typography.titleLarge)
+                                val format = NumberFormat.getCurrencyInstance(Locale("es", "CL"))
+                                format.maximumFractionDigits = 0
+                                Text(
+                                    text = format.format(product.price),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
-                            IconButton(onClick = { viewModel.deleteProduct(product.id) }) {
-                                Icon(Icons.Default.Delete, contentDescription = stringResource(id = R.string.remove_item), tint = MaterialTheme.colorScheme.error)
+                            Row {
+                                IconButton(onClick = { onEditProduct(product.id) }) {
+                                    Icon(Icons.Default.Edit, contentDescription = stringResource(id = R.string.edit_product))
+                                }
+                                IconButton(onClick = { viewModel.deleteProduct(product.id) }) {
+                                    Icon(Icons.Default.Delete, contentDescription = stringResource(id = R.string.remove_item), tint = MaterialTheme.colorScheme.error)
+                                }
                             }
                         }
                     }
