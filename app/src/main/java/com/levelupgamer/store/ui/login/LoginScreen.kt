@@ -22,7 +22,12 @@ import com.levelupgamer.store.data.model.User
 import com.example.proyectoappmovil.R
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel, onLoginSuccess: (User) -> Unit, onRegisterClick: () -> Unit) {
+fun LoginScreen(
+    viewModel: LoginViewModel, 
+    onLoginSuccess: (User) -> Unit, 
+    onRegisterClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit // Added this parameter
+) {
     val uiState by viewModel.uiState.collectAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -68,6 +73,11 @@ fun LoginScreen(viewModel: LoginViewModel, onLoginSuccess: (User) -> Unit, onReg
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = MaterialTheme.colorScheme.primary, unfocusedBorderColor = Color.Gray)
             )
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                TextButton(onClick = onForgotPasswordClick) {
+                    Text("¿Olvidaste tu contraseña?")
+                }
+            }
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = { viewModel.login(Credential(email, password)) },

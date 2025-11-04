@@ -35,6 +35,7 @@ import com.levelupgamer.store.ui.cart.CartScreen
 import com.levelupgamer.store.ui.cart.CartViewModel
 import com.levelupgamer.store.ui.home.CategoryScreen
 import com.levelupgamer.store.ui.home.HomeScreen
+import com.levelupgamer.store.ui.login.ForgotPasswordScreen
 import com.levelupgamer.store.ui.login.LoginScreen
 import com.levelupgamer.store.ui.login.LoginViewModel
 import com.levelupgamer.store.ui.login.RegisterScreen
@@ -92,7 +93,7 @@ fun AppNav() {
             enterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700)) },
             exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700)) }
         ) {
-            // Login and Register Flow
+            // Login, Register, and Forgot Password Flow
             composable("login") {
                 val loginViewModel: LoginViewModel = viewModel(factory = object : ViewModelProvider.Factory {
                     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -111,16 +112,23 @@ fun AppNav() {
                             popUpTo("login") { inclusive = true }
                         }
                     },
-                    onRegisterClick = { navController.navigate("register") }
+                    onRegisterClick = { navController.navigate("register") },
+                    onForgotPasswordClick = { navController.navigate("forgot_password") }
                 )
             }
             composable("register") {
                 RegisterScreen(
                     onRegisterSuccess = { email ->
-                        navController.navigate("main_flow/$email") { // Pass the email as the username
+                        navController.navigate("main_flow/$email") { 
                             popUpTo("login") { inclusive = true }
                         }
                     },
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable("forgot_password") {
+                ForgotPasswordScreen(
+                    onLinkSent = { navController.popBackStack() }, // Go back to login after link is sent
                     onBack = { navController.popBackStack() }
                 )
             }
